@@ -17,18 +17,20 @@ ivars = VarParsing.VarParsing('analysis')
 #ivars.inputFiles='file:/data/twang/Data_samples/HIRun2015/HIHardProbes/RECO/D0Meson-PromptReco-v1/000/262/735/00000/6E423E98-5C99-E511-B72B-02163E0138EE.root'#HIHardProbes
 #ivars.inputFiles='file:/data/twang/Data_samples/HIRun2015/HIHardProbes/RECO/D0Meson-PromptReco-v1/000/262/735/00000/E67242E4-5E99-E511-947B-02163E0127B4.root'#HIHardProbes
 #ivars.inputFiles='file:/data/twang/Data_samples/HIRun2015/HIMinimumBias1/AOD/PromptReco-v1/000/262/726/00000/EE7F4A63-4599-E511-9CE5-02163E013850.root'#HIMinimumBias1
-ivars.outputFile='finder_PbPb.root'
+#ivars.inputFiles='/store/himc/HINPbPbWinter16DR/Pythia8_prompt_D0pt0to2_Pthat0_Hydjet_MB/AODSIM/75X_mcRun2_HeavyIon_v14-v1/00000/009CA58B-0298-E611-8E1F-0CC47A7FC702.root'
+ivars.inputFiles='file:/afs/cern.ch/work/c/chengchi/work/Project/BtoD/MC_production/HeavyFlavour_subset/CMSSW_7_5_8_patch3/src/PbPb_prompt_D0pt2to4_p3v13_step2_RAW2DIGItoRECO.root'
+ivars.outputFile='finder_PbPb_prompt_D0pt2to4_p3v13.root'
 ivars.parseArguments()# get and parse the command line arguments
 
 ### Custom options
 ########## MUST CUSTOMIZE THE FOLLOWING THREE ##########
 ### PbPb B/Dfinder recommended setting, choose only one from them or set all to false and made your own setting
-PbPbBdefault = True
+PbPbBdefault = False
 PbPbDHPdefault = False
-PbPbDMBdefault = False
+PbPbDMBdefault = True
 
 ### Run on MC?
-runOnMC = False
+runOnMC = True
 
 ### Use AOD event filter
 RunOnAOD = True
@@ -52,7 +54,7 @@ VtxLabel = "hiSelectedVertex"
 #TrkLabel = "hiGeneralTracks"
 
 ### Set maxEvents
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1))
 
 ### output module
 process.out = cms.OutputModule("PoolOutputModule",
@@ -108,7 +110,7 @@ if runOnMC:
 	#globalTag = '75X_mcRun2_HeavyIon_v1'##PbPb for 7_5_0
 	#globalTag = '75X_mcRun2_HeavyIon_v4'##PbPb for 7_5_3_patch1
 	#globalTag = 'auto:run2_mc_HIon'
-    globalTag = '75X_mcRun2_HeavyIon_v13'
+    globalTag = '75X_mcRun2_HeavyIon_v14'
 #Data
 else:
 	#globalTag = 'FT_53_V6_AN2::All'#for 2012AB
@@ -272,13 +274,13 @@ if PbPbDHPdefault and not PbPbDMBdefault and not PbPbBdefault:
     process.p = cms.Path(process.DfinderSequence)
 ## PbPb Dfinder setting on MB
 if PbPbDMBdefault and not PbPbDHPdefault and not PbPbBdefault:
-    process.Dfinder.tkPtCut = cms.double(0.7)#before fit
-    process.Dfinder.dPtCut = cms.vdouble(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)#before fit
+    process.Dfinder.tkPtCut = cms.double(0.5)#before fit
+    process.Dfinder.dPtCut = cms.vdouble(0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)#before fit
     process.Dfinder.dCutSeparating_PtVal = cms.vdouble(5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5.)
     process.Dfinder.tktkRes_svpvDistanceCut_lowptD = cms.vdouble(0., 0., 0., 0., 0., 0., 0., 0., 2.5, 2.5, 2.5, 2.5)
     process.Dfinder.tktkRes_svpvDistanceCut_highptD = cms.vdouble(0., 0., 0., 0., 0., 0., 0., 0., 2.5, 2.5, 2.5, 2.5)
     process.Dfinder.svpvDistanceCut_lowptD = cms.vdouble(4.0, 4.0, 2.5, 2.5, 2.5, 2.5, 4.0, 4.0, 0., 0., 0., 0.)
-    process.Dfinder.svpvDistanceCut_highptD = cms.vdouble(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 0., 0., 0., 0.)
+    process.Dfinder.svpvDistanceCut_highptD = cms.vdouble(2.0, 2.0, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 0., 0., 0., 0.)
     process.Dfinder.Dchannel = cms.vint32(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
     process.p = cms.Path(process.DfinderSequence)
 

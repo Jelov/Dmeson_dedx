@@ -7,19 +7,21 @@ ivars = VarParsing.VarParsing('analysis')
 #ivars.inputFiles='file:/data/twang/Data_samples/Run2015E/DoubleMu/RECO/PromptReco-v1/000/262/163/00000/14A3BF17-D591-E511-868F-02163E014117.root'#RECO DoubleMu
 #ivars.inputFiles='file:/data/twang/Data_samples/Run2015E/HeavyFlavor/AOD/PromptReco-v1/000/262/273/00000/06090E4E-0C97-E511-856C-02163E0142D2.root'#AOD HeavyFlavor
 #ivars.inputFiles='file:/data/twang/Data_samples/Run2015E/MinimumBias1/AOD/PromptReco-v1/000/262/274/00000/0E443E25-3C9A-E511-9263-02163E013626.root'#AOD MB1
-ivars.outputFile='finder_pp.root'
+
+ivars.inputFiles='file:/afs/cern.ch/work/c/chengchi/work/2016RunPre/Data_check/Dmeson_dedx/rootfile/2015pp5Tev_MCAODsim_Dpthat0.root'
+ivars.outputFile='finder_pp_2015MC.root'
 ivars.parseArguments()# get and parse the command line arguments
 
 ### Custom options
 ########## MUST CUSTOMIZE THE FOLLOWING THREE ##########
 ### pp B/Dfinder recommended setting, choose only one from them or set all to false and made your own setting
-ppBdefault = True
+ppBdefault = False
 ppDHFdefault = False
-ppDMBdefault = False
+ppDMBdefault = True
 ppD0DstarV2 = False
 
 ### Run on MC?
-runOnMC = False
+runOnMC = True
 
 ### Use AOD event filter
 RunOnAOD = True
@@ -43,7 +45,7 @@ VtxLabel = "offlinePrimaryVerticesWithBS"
 TrkLabel = "generalTracks"
 
 ### Set maxEvents
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(100))
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(5000))
 
 ### output module
 process.out = cms.OutputModule("PoolOutputModule",
@@ -245,7 +247,7 @@ if ppBdefault and not ppDMBdefault and not ppDHFdefault and not ppD0DstarV2:
     process.p = cms.Path(process.BfinderSequence)
 ## pp Dfinder setting on HeavyFlavor
 if ppDHFdefault and not ppDMBdefault and not ppBdefault and not ppD0DstarV2:
-    process.Dfinder.tkPtCut = cms.double(1.)#before fit
+    process.Dfinder.tkPtCut = cms.double(2.5)#before fit
     process.Dfinder.dPtCut = cms.vdouble(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0)#before fit
     process.Dfinder.dCutSeparating_PtVal = cms.vdouble(5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5.)
     process.Dfinder.tktkRes_svpvDistanceCut_lowptD = cms.vdouble(0., 0., 0., 0., 0., 0., 0., 0., 2.5, 2.5, 2.5, 2.5)
@@ -256,13 +258,13 @@ if ppDHFdefault and not ppDMBdefault and not ppBdefault and not ppD0DstarV2:
     process.p = cms.Path(process.DfinderSequence)
 ##pp Dfinder setting on MB
 if ppDMBdefault and not ppDHFdefault and not ppBdefault and not ppD0DstarV2:
-    process.Dfinder.tkPtCut = cms.double(1.)#before fit
-    process.Dfinder.dPtCut = cms.vdouble(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)#before fit
+    process.Dfinder.tkPtCut = cms.double(0.2)#before fit
+    process.Dfinder.dPtCut = cms.vdouble(0.0, 0.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0)#before fit
     process.Dfinder.dCutSeparating_PtVal = cms.vdouble(5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5., 5.)
     process.Dfinder.tktkRes_svpvDistanceCut_lowptD = cms.vdouble(0., 0., 0., 0., 0., 0., 0., 0., 2.5, 2.5, 2.5, 2.5)
     process.Dfinder.tktkRes_svpvDistanceCut_highptD = cms.vdouble(0., 0., 0., 0., 0., 0., 0., 0., 2.5, 2.5, 2.5, 2.5)
     process.Dfinder.svpvDistanceCut_lowptD = cms.vdouble(4.0, 4.0, 2.5, 2.5, 2.5, 2.5, 4.0, 4.0, 0., 0., 0., 0.)
-    process.Dfinder.svpvDistanceCut_highptD = cms.vdouble(2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 0., 0., 0., 0.)
+    process.Dfinder.svpvDistanceCut_highptD = cms.vdouble(2.0, 2.0, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 0., 0., 0., 0.)
     process.Dfinder.Dchannel = cms.vint32(1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0)
     process.p = cms.Path(process.DfinderSequence)
 ## default cut version 2

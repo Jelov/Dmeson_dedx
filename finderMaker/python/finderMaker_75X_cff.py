@@ -148,6 +148,8 @@ def finderMaker_75X(process, AddCaloMuon = False, runOnMC = True, HIFormat = Fal
 	    GenLabel = cms.InputTag('genParticles'),
 		MuonLabel = cms.InputTag('patMuonsWithTrigger'),
 		TrackLabel = cms.InputTag('patTrackCands'),
+		RecoTrackLabel = cms.InputTag('generalTracks'),
+		RecoDEdxLabel = cms.InputTag('dedxHarmonic'),
         MVAMapLabel = cms.string(TrkLabel),
 	    PUInfoLabel = cms.InputTag("addPileupInfo"),
 	    BSLabel = cms.InputTag("offlineBeamSpot"),
@@ -193,6 +195,8 @@ def finderMaker_75X(process, AddCaloMuon = False, runOnMC = True, HIFormat = Fal
 	    PUInfoLabel = cms.InputTag("addPileupInfo"),
 	    BSLabel = cms.InputTag("offlineBeamSpot"),
 	    PVLabel = cms.InputTag(VtxLabel),
+			RecoTrackLabel = cms.InputTag('generalTracks'),
+			RecoDEdxLabel = cms.InputTag('dedxHarmonic'),
 	    tkPtCut = cms.double(1.),#before fit
 	    tkEtaCut = cms.double(2.0),#before fit
 	    dPtCut = cms.vdouble(8., 8., 8., 8., 8., 8., 8., 8., 8., 8., 8., 8.),#before fit
